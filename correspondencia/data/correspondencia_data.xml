@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+    <record id="acciones_01" model="correspondencia_acciones">
+		<field name="name">Archivar</field>
+        <field name="codigo">AR</field>
+		<field name="accion_interna"/>
+	</record>
+        
+<!--
+    <record id="acciones_02" model="correspondencia_acciones">
+		<field name="name">Enviar por Fax</field>
+        <field name="codigo">EF</field>
+		<field name="accion_interna_ids"/>
+	</record>
+        
+    <record id="acciones_03" model="correspondencia_acciones">
+		<field name="name">Información y Fines Consiguientes</field>
+        <field name="codigo">IF</field>
+		<field name="accion_interna_ids"/>
+	</record>
+        
+    <record id="acciones_04" model="correspondencia_acciones">
+		<field name="name">Solicitud de Audencia</field>
+        <field name="codigo">SA</field>
+		<field name="accion_interna_ids"/>
+	</record>
+-->
+
+    </data>
+</openerp>

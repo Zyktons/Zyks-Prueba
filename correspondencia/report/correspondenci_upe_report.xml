@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <report id="id_correspondencia_upe_report_qweb"
+            string="Upe"
+            model="correspondencia.upe"
+            report_type="qweb-pdf"
+            file="correspondencia.id_upe_report_qweb"
+            name="correspondencia.id_upe_report_qweb"
+            menu="False"/>
+    </data>
+
+</openerp>

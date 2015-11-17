@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record id="view_correspondencia_personal_wizard_form" model="ir.ui.view">
+            <field name="name">correspondencia_personal.report.wizard.form</field>
+            <field name="model">correspondencia_personal.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Personal">
+                    <group>
+
+                   <field name="date_start" string= "Fecha de Ingreso"/>
+                   <field name="date_end" string= "Fecha de Egreso"/>
+                  
+                    </group>
+                    <newline/>
+					<separator colspan='4'/>
+					<newline/>
+					<button icon="gtk-cancel" string="Cancelar" special="cancel"/>
+                    <button icon="gtk-print" name="print_report" string="Print" type="object"/>
+               </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_correspondencia_personal_wizard" >
+            <field name="name"> Reporte de Personal</field>
+            <field name="res_model">correspondencia_personal.report.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem 
+            name="Reporte de Personal"
+            id="menu_correspondencia_personal"
+            parent="menu_reportes_presidencia"
+            action="action_correspondencia_personal_wizard"
+            sequence="16"/>
+      
+    </data>
+</openerp>

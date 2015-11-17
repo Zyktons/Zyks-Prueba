@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <report id="id_correspondencia_cheques_report_qweb"
+            string="Cheques"
+            model="correspondencia.cheques"
+            report_type="qweb-pdf"
+            file="correspondencia.id_cheques_report_qweb"
+            name="correspondencia.id_cheques_report_qweb"
+            menu="False"/>
+	</data>
+
+</openerp>

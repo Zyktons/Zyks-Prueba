@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+<data>
+<!--
+	#
+	# Sequences for correspondencia
+	#
+-->
+
+	<record model="ir.sequence.type" id="seq_type_correspondencia_correspondencia">
+		<field name="name">Correspondencia</field>
+		<field name="code">correspondencia.correspondencia</field>
+	</record>
+	<record model="ir.sequence" id="seq_correspondencia_correspondencia">
+		<field name="name">Correspondencia</field>
+		<field name="code">correspondencia.correspondencia</field>
+        <field name="padding" eval="4"/>
+        <field name="prefix">CO/%(year)s/</field>
+	</record>
+</data> 
+</openerp>

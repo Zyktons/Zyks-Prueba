@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <report id="id_correspondencia_informatica_report_qweb"
+            string="Auditoria"
+            model="correspondencia.informatica"
+            report_type="qweb-pdf"
+            file="correspondencia.id_informatica_report_qweb"
+            name="correspondencia.id_informatica_report_qweb"
+            menu="True"/>
+    </data>
+
+</openerp>

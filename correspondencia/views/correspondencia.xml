@@ -1,0 +1,1219 @@
+<?xml version="1.0" encoding="utf-8"?>
+   <openerp>
+     <data>
+    <record model="ir.ui.view" id="view_correspondencia_correspondencia_form">
+        <field name="name">correspondencia_correspondencia.form</field>
+        <field name="model">correspondencia.correspondencia</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Correspondencia">
+                <header>
+                    <field name="state" widget="statusbar" clickable="True"/>
+                </header>
+                <sheet>
+                    <label string="Nro. de Documento"/>
+                        <h1>
+                            <field name="documento_no" class="oe_inline"/>
+                        </h1>
+                    <div class="oe_right oe_button_box">
+                            <button name="action_get_attachment_tree_view" 
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                type="object">
+                                <field name="attachment_number" widget="statinfo" string="Documentos"/>
+                            </button>
+                    </div>
+                    <group string="Hoja de Acción">
+                        <field name="remitente" string ="Remitente" style="width:80%%"/>                   
+                        <field name="fecha_recibido"/>
+                        <field name="fecha_comunicacion"/>   
+                        <field name="num_comunicacion" style="width:30%%"/>
+                        <field name="estante_id" on_change="limpiar_selector('estante')" style="width:30%%" />
+                        <field name="nivel_id" on_change="limpiar_selector('nivel')" domain="[('estante_id','=',estante_id)]" style="width:30%%" />
+                        <field name="asunto" style="width:60%%"/>
+                    </group>
+                    <notebook>
+                        <page string="Unidades">
+                            <group string= "Unidades Internas" >
+                                <field name="unidades" Widget="many2many_checkboxes"/>
+                            </group>
+                        </page>
+                        <page string="Instrucciones">
+                            <group string="Instrucciones">
+                                <field name="instrucciones" string= "Descripción"/>
+                            </group>
+                        </page>
+                        <page string="Observaciones">
+                            <group string="Observaciones de la correspondencia">
+                                <field name="observaciones"/>
+                            </group>
+                        </page>
+                        <page string="Acciones">
+                            <group string="Acción Interna">
+                                <field name="accion_interna" widget="many2many_checkboxes" string="Acción Interna"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread" options='{"thread_level": 1}' placeholder="Send a message to the group"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_correspondencia_correspondencia_tree">
+         <field name="name">correspondencia_correspondencia.tree</field>
+        <field name="model">correspondencia.correspondencia</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Correspondencia" colors="blue:state == 'correspondencia','secretaria';gray:state == 'presidencia';red:state == 'cancel'">
+                <field name="fecha_recibido"/>
+                <field name="num_comunicacion"/>
+                <field name="fecha_comunicacion"/>
+                <field name="asunto"/>                
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_correspondencia_correspondencia">
+        <field name="name">correspondencia</field>
+        <field name="res_model">correspondencia.correspondencia</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+
+    <menuitem name="Gestion de Correspondencia" id="menu_vcorrespondencia_correspondencia_gestion" sequence="10"/>
+    <menuitem name="Inicio" id="menu_correspondencia_correspondencia_inicio" parent="menu_vcorrespondencia_correspondencia_gestion" sequence="10"/>
+    <menuitem name="Correspondencia" id="menu_correspondencia_correspondencia" parent="menu_correspondencia_correspondencia_inicio" action="action_correspondencia_correspondencia" sequence="20"/>
+    
+<!--
+
+Vista de Remitente
+-->
+
+    <record model="ir.ui.view" id="view_correspondencia_remitente_form">
+        <field name="name">correspondencia_remitente.form</field>
+        <field name="model">correspondencia.remitente</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Remitente">
+            <group>
+                <field name="nombre_remitente" string= "Remitente" style= "width:30%"/>                   
+                <field name="telefono" string="Telefono" style="width:30%"/>
+            </group>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_remitente_tree">
+        <field name="name">correspondencia_remitente.tree</field>
+        <field name="model">correspondencia.remitente</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Remitente">
+                <field name="nombre_remitente"/>
+                <field name="telefono"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_remitente">
+        <field name="name">Remitente</field>
+        <field name="res_model">correspondencia.remitente</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+   
+    <menuitem name="Configuración" id="menu_correspondencia_remitente_configuracion" parent="menu_vcorrespondencia_correspondencia_gestion" sequence="20"/>
+    <menuitem name="Remitente" id="menu_correspondencia_remitente" action="action_correspondencia_remitente" parent="menu_correspondencia_remitente_configuracion" sequence="30"/>
+
+
+<!--
+Vista de Unidades
+-->
+
+    <record model="ir.ui.view" id="view_correspondencia_unidades_form">
+        <field name="name">correspondencia_unidades.form</field>
+        <field name="model">correspondencia.unidades</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Unidades">
+                <group>
+                    <field name="nombre_unidades" string= "Nombre" style= "width:30%"/>                   
+                </group>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_unidades_tree">
+        <field name="name">correspondencia_unidades.tree</field>
+        <field name="model">correspondencia.unidades</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Remitente">
+                <field name="nombre_unidades"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_unidades">
+        <field name="name">Unidades</field>
+        <field name="res_model">correspondencia.unidades</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem name="Unidades" id="menu_correspondencia_unidades" action="action_correspondencia_unidades" parent="menu_correspondencia_remitente_configuracion" sequence="40"/>
+
+
+<!--
+Vista de accion interna
+-->
+
+    <record model="ir.ui.view" id="view_correspondencia_acciones_form">
+        <field name="name">correspondencia_acciones.form</field>
+        <field name="model">correspondencia.acciones</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Acción Interna">
+                <group>
+                    <field name="nombre_accion" string= "Nombre" style= "width:30%"/>                   
+                </group>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_acciones_tree">
+        <field name="name">correspondencia_acciones.tree</field>
+        <field name="model">correspondencia.acciones</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Acción Interna">
+                <field name="nombre_accion"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_acciones">
+        <field name="name">Acciones</field>
+        <field name="res_model">correspondencia.acciones</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Acción" id="menu_correspondencia_acciones" action="action_correspondencia_acciones" parent="menu_correspondencia_remitente_configuracion" sequence="40"/>
+    
+    
+<!--
+Vista de estantería
+-->
+
+    <record model="ir.ui.view" id="view_correspondencia_acciones_form">
+        <field name="name">correspondencia_estante.form</field>
+        <field name="model">correspondencia.estante</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Archivos">
+                <group>
+                    <field name="nombre_estante" string= "Estante" style= "width:30%"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_estante_tree">
+        <field name="name">correspondencia_estante.tree</field>
+        <field name="model">correspondencia.estante</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Estantes">
+                <field name="nombre_estante"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_estante">
+        <field name="name">Estantes</field>
+        <field name="res_model">correspondencia.estante</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Estantes" id="menu_correspondencia_estante" action="action_correspondencia_estante" parent="menu_correspondencia_remitente_configuracion" sequence="50"/>
+
+
+<!--
+    Vista de Nivel
+-->
+
+    <record model="ir.ui.view" id="view_correspondencia_nivel_form">
+        <field name="name">correspondencia_nivel.form</field>
+        <field name="model">correspondencia.nivel</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Nivel">
+                <group>
+                    <field name="estante_id" style="width:26%%" />
+                    <field name="nombre_nivel" style="width:26%%" />
+                </group>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_nivel_tree">
+        <field name="name">correspondencia_nivel.tree</field>
+        <field name="model">correspondencia.nivel</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Nivel">
+                <field name="estante_id"/>
+                <field name="nombre_nivel"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_nivel">
+        <field name="name">Niveles</field>
+        <field name="res_model">correspondencia.nivel</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Niveles" id="menu_ccorrespondencia_nivel" action="action_correspondencia_nivel" parent="menu_correspondencia_remitente_configuracion" sequence="60"/>
+
+<!--
+Quitando campos de la vista ir_attachment
+-->
+
+    <record model="ir.ui.view" id="view_correspondencia_documentos">
+        <field name="name">correspondencia_documentos</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_form"/>
+        <field name="arch" type="xml">
+
+
+                   <field name="name"/>
+
+
+        <xpath expr="/form/sheet/group/group[@string='Attached To']" position= "replace"/>
+
+        <xpath expr="/form/sheet/group/group[@string='History']" position= "replace"/>
+
+       </field>
+    </record>  
+
+<!--
+Vista de Recepcion
+-->
+
+    <record model="ir.ui.view" id="view_correspondencia_recepcion_form">
+        <field name="name">correspondencia_recepcion.form</field>
+        <field name="model">correspondencia.recepcion</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Recepción">
+                <header>
+                    <field name="state" widget="statusbar" clickable="True"/>
+                </header>
+                    <sheet>
+                        <group string="Recepción">
+                            <field name="remitente" style="width:40%%"/>
+                            <field name="emisor" style="width:40%%"/>
+                            <field name="tipo_correspondencia" style="width:60%%"/>
+                        </group>
+                    
+                        <group string= "Unidades Internas" >
+                            <field name="unidades1" Widget="many2many_checkboxes"/>
+                        </group>
+                    </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_estante_tree">
+        <field name="name">>correspondencia_recepcion.tree</field>
+        <field name="model">correspondencia.recepcion</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Recepción" colors="blue:state == 'entregado'">
+                <field name="remitente"/>
+                <field name="emisor"/>
+                <field name="tipo_correspondencia"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_recepcion">
+        <field name="name">Recepción</field>
+        <field name="res_model">correspondencia.recepcion</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <menuitem name="Recepción" id="menu_correspondencia_recepcion" parent="menu_correspondencia_correspondencia_inicio" action="action_correspondencia_recepcion" sequence="50"/>
+
+
+<!--
+Vista Tree Gestión Presidencia
+-->
+    
+    <record model="ir.ui.view" id="view_gestion_correspondencia_presidencia_tree">
+        <field name="name">correspondencia_gestion_presidencia.tree</field>
+        <field name="model">correspondencia.gestion.presidencia</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Gestión General">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="ingresado_por"/>
+                 <field name="ente"/>
+                 <field name="fecha_firma"/>
+                 <field name="egresado_por"/>
+                 <field name="tipo_documento"/>
+                 <field name="numero_comunicado"/>
+                 <field name="asunto"/>
+                 <field name="hoja_accion"/>
+            </tree>
+        </field>
+    </record>
+    
+
+
+
+<!--
+Vista de Providencia
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_providencia_form">
+        <field name="name">correspondencia_providencia.form</field>
+        <field name="model">correspondencia.providencia</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Providencia">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="direccion_remitiente" style="width:40%%"/>
+                    <field name="ente" style="width:40%%"/>
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                     </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_providencia_tree">
+        <field name="name">correspondencia_providencia.tree</field>
+        <field name="model">correspondencia.providencia</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Providencia">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="ingresado_por" />
+                 <field name="direccion_remitiente"/>
+                 <field name="fecha_firma" />
+                
+                
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_providencia">
+        <field name="name">Providencia</field>
+        <field name="res_model">correspondencia.providencia</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Gestión" id="menu_correspondencia_gestion" parent="menu_vcorrespondencia_correspondencia_gestion" sequence="15"/>
+    <menuitem name="Gestión de presidencia" id="menu_correspondencia_gestion_presidencia" parent="menu_correspondencia_gestion" sequence="20"/>
+    <menuitem name="Providencia" id="menu_providencia" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_providencia" sequence="16"/>
+
+<!--
+Vista de Consultoria
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_consultoria_form">
+        <field name="name">correspondencia_consultoria.form</field>
+        <field name="model">correspondencia.consultoria</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Consultoria">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%"/>
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_consultoria_tree">
+        <field name="name">correspondencia_consultoria.tree</field>
+        <field name="model">correspondencia.consultoria</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Consultoria">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="ingresado_por" />
+                 <field name="tipo_documento"/>
+                 <field name="fecha_firma" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_consultoria">
+        <field name="name">Consultoria</field>
+        <field name="res_model">correspondencia.consultoria</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Consultoria" id="menu_consultoria" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_consultoria" sequence="16"/>
+
+<!--
+Vista de Ingresos propios
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_ingresos_propios_form">
+        <field name="name">correspondencia_ingresos_propios.form</field>
+        <field name="model">correspondencia.ingresos.propios</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Consultoria">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%"/>
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                     </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_ingresos_propios_tree">
+        <field name="name">correspondencia_ingresos_propios.tree</field>
+        <field name="model">correspondencia.ingresos.propios</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Ingresos Propios">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="ingresado_por" />
+                 <field name="tipo_documento"/>
+                 <field name="fecha_firma" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_ingresos_propios">
+        <field name="name">Ingresos Propios</field>
+        <field name="res_model">correspondencia.ingresos.propios</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Ingresos Propios" id="menu_ingresos_propios" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_ingresos_propios" sequence="16"/>
+
+<!--
+    Vista de cheques
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_cheques_form">
+        <field name="name">correspondencia_cheques.form</field>
+        <field name="model">correspondencia.cheques</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Cheques">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="n_cheque" style="width:40%%"/>
+                    <field name="beneficiario" style="width:40%%"/>
+                    <field name="cheque_monto" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                    </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_cheques_tree">
+        <field name="name">correspondencia_cheques.tree</field>
+        <field name="model">correspondencia.cheques</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Ingresos Propios">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="n_cheque"/>
+                 <field name="fecha_firma" />
+                
+                
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_cheques">
+        <field name="name">Cheques</field>
+        <field name="res_model">correspondencia.cheques</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Cheques" id="menu_cheques" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_cheques" sequence="16"/>
+
+
+<!--                      
+Vista de Personal
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_personal_form">
+        <field name="name">correspondencia_personal.form</field>
+        <field name="model">correspondencia.personal</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Personal">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%"/>
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                     </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_personal_tree">
+        <field name="name">correspondencia_personal.tree</field>
+        <field name="model">correspondencia.personal</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Personal">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="ingresado_por" />
+                 <field name="asunto" style="width:40%%"/>
+                 <field name="fecha_firma" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_personal">
+        <field name="name">Personal</field>
+        <field name="res_model">correspondencia.personal</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Personal" id="menu_personal" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_personal" sequence="16"/>
+
+<!--
+Vista de infraestructura
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_infraestructura_form">
+        <field name="name">correspondencia_infraestructura.form</field>
+        <field name="model">correspondencia.infraestructura</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Infraestructura">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%"/>
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                     </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_infraestructura_tree">
+        <field name="name">correspondencia_infraestructura.tree</field>
+        <field name="model">correspondencia.infraestructura</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Infraestructura">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="ingresado_por" />
+                 <field name="tipo_documento"/>
+                 <field name="fecha_firma" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_infraestructura">
+        <field name="name">Infraestructura</field>
+        <field name="res_model">correspondencia.infraestructura</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Infraestructura" id="menu_infraestructura" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_infraestructura" sequence="16"/>
+
+<!--
+vista de Direccion General
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_dir_general_form">
+        <field name="name">correspondencia_dir_general.form</field>
+        <field name="model">correspondencia.dir.general</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dirección General">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%" />
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                     </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_dir_general_tree">
+        <field name="name">correspondencia_dir_general.tree</field>
+        <field name="model">correspondencia.dir.general</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Dirección General">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="ente"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_dir_general">
+        <field name="name">Dirección General</field>
+        <field name="res_model">correspondencia.dir.general</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Dirección General" id="menu_dir_general" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_dir_general" sequence="16"/>
+
+<!--
+Vista de punto de cuenta
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_punto_cuenta_form">
+        <field name="name">correspondencia_punto_cuenta.form</field>
+        <field name="model">correspondencia.punto.cuenta</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Punto de cuenta">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="direccion_remitiente" style="width:40%%"/>
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="beneficiario" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                    <field name="observacion" style="width:40%%"/>
+                     </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_punto_cuenta_tree">
+        <field name="name">correspondencia_punto_cuenta.tree</field>
+        <field name="model">correspondencia.punto.cuenta</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Punto de cuenta">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="ingresado_por" />
+                 <field name="asunto" style="width:40%%"/>
+                 <field name="fecha_firma" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_punto_cuenta">
+        <field name="name">Punto de cuenta</field>
+        <field name="res_model">correspondencia.punto.cuenta</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Punto de cuenta" id="menu_punto_cuenta" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_punto_cuenta" sequence="16"/>
+
+<!--
+Vista de transferencia
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_transferencia_form">
+        <field name="name">correspondencia_transferencia.form</field>
+        <field name="model">correspondencia.transferencia</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Transferencia">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="transferencia_monto"/>
+                    <field name="egresado_por" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_transferencia_tree">
+        <field name="name">correspondencia_transferencia.tree</field>
+        <field name="model">correspondencia.transferencia</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Transferencia">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="egresado_por"/>
+                 <field name="fecha_firma" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_transferencia">
+        <field name="name">Transferencia</field>
+        <field name="res_model">correspondencia.transferencia</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Transferencia" id="menu_correspondencia_transferencia" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_transferencia" sequence="16"/>
+
+<!--
+Vista de Administracion
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_administracion_form">
+        <field name="name">correspondencia_administracion.form</field>
+        <field name="model">correspondencia.administracion</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Administración">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%" />
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                    <field name="egresado_por" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_administracion_tree">
+        <field name="name">correspondencia_administracion.tree</field>
+        <field name="model">correspondencia.administracion</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Administración">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="egresado_por"/>
+                 <field name="fecha_firma" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_administracion">
+        <field name="name">Administración</field>
+        <field name="res_model">correspondencia.administracion</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Administración" id="menu_correspondencia_administracion" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_administracion" sequence="16"/>
+
+<!--
+Vista de Upe
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_upe_form">
+        <field name="name">correspondencia_upe.form</field>
+        <field name="model">correspondencia.upe</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Upe">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%" />
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                   </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_upe_tree">
+        <field name="name">correspondencia_upe_.tree</field>
+        <field name="model">correspondencia.upe</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Upe">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="asunto" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_upe">
+        <field name="name">Upe</field>
+        <field name="res_model">correspondencia.upe</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Upe" id="menu_correspondencia_upe" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_upe" sequence="17"/>
+    
+<!--
+Vista de auditoria
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_auditoria_int_form">
+        <field name="name">correspondencia_auditoria_int.form</field>
+        <field name="model">correspondencia.auditoria.int</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Auditoria Interna">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%" />
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                   </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_auditoria_int_tree">
+        <field name="name">correspondencia_auditoria_int_.tree</field>
+        <field name="model">correspondencia.auditoria.int</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Auditoria Interna">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="asunto" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_auditoria_int">
+        <field name="name">Auditoria Interna</field>
+        <field name="res_model">correspondencia.auditoria.int</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Auditoria Interna" id="menu_correspondencia_auditoria_int" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_auditoria_int" sequence="16"/>
+
+<!--
+Vista de planificación
+-->
+
+<record model="ir.ui.view" id="view_correspondencia_planificacion_form">
+        <field name="name">correspondencia_planificacion.form</field>
+        <field name="model">correspondencia.planificacion</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Planificación">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="ingresado_por" style="width:40%%"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%" />
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_planificacion_tree">
+        <field name="name">correspondencia_planificacion.tree</field>
+        <field name="model">correspondencia.planificacion</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Auditoria Interna">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="asunto" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_planificacion">
+        <field name="name">Planificación</field>
+        <field name="res_model">correspondencia.planificacion</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Planificación" id="menu_correspondencia_planificacion" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_planificacion" sequence="16"/>
+
+<!--
+Vista de Informatica
+-->
+
+
+
+<record model="ir.ui.view" id="view_correspondencia_informatica_form">
+        <field name="name">correspondencia_informatica.form</field>
+        <field name="model">correspondencia.informatica</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Informatica">
+                
+                <sheet>
+                  <group>
+                    <field name="id" string= "N° de Registro"/>
+                    <field name="fecha_ingreso"/>
+                    <field name="tipo_documento" style="width:40%%"/>
+                    <field name="ente" style="width:40%%" />
+                    <field name="asunto" style="width:40%%"/>
+                    <field name="numero_comunicado"/>
+                    <field name="hoja_accion" style="width:40%%"/>
+                    <field name="fecha_firma" />
+                    <field name="egresado_por" style="width:40%%"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="view_correspondencia_informatica_tree">
+        <field name="name">correspondencia_informatica.tree</field>
+        <field name="model">correspondencia.informatica</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Informatica">
+                 <field name="id" string= "N° de Registro"/>
+                 <field name="fecha_ingreso"/>
+                 <field name="tipo_documento"/>
+                 <field name="asunto" />
+            </tree>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_informatica">
+        <field name="name">Informatica</field>
+        <field name="res_model">correspondencia.informatica</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem name="Informatica" id="menu_correspondencia_informatica" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_informatica" sequence="16"/>
+
+
+<!--
+Vista de los filtros
+-->
+
+      <record id="view_filtro_correspondencia" model="ir.ui.view">
+            <field name="name">correspondencia_correspondencia.select</field>
+            <field name="model">correspondencia.correspondencia</field>
+            <field name="arch" type="xml">
+                <search string="Busqueda de Correspondencia">
+                    <group string="Estados">
+                        <filter     name="state"         
+                                    string="En correspondencia"
+                                    domain="[('state','in',['correspondencia'])]" />
+                        <filter     name="state"
+                                    string="En revisión"
+                                    domain="[('state','in',['secretaria'])]" />
+                        <filter     name="state"         
+                                    string="Por firmar"                 
+                                    domain="[('state','in',['presidencia'])]" />
+                        <filter     name="state"         
+                                    string="Firmado"                 
+                                    domain="[('state','in',['firma'])]" />
+                        <filter     name="state"         
+                                    string="Cancelado"                 
+                                    domain="[('state','in',['cancel'])]" />
+                    </group>
+                </search>
+            </field>
+        </record>
+    
+<!--
+    Filtro Gestión Presidencia
+-->
+
+
+    <record id="view_filtro_correspondencia_gestion_presidencia" model="ir.ui.view">
+        <field name="name">correspondencia.gestion.presidencia.search</field>
+        <field name="model">correspondencia.gestion.presidencia</field>
+        <field name="arch" type="xml">
+            <search string="Gestión Presidencia">
+                <group string="Gestión">
+                    <filter icon="terp-terp-document-new" domain="[('is_providencia','=',True)]" string="Providencia"/>
+                    <filter icon="terp-check" domain="[('is_consultoria','=',True)]" string="Consultoria"/>
+                    <filter icon="terp-check" domain="[('is_ingresos','=',True)]" string="Ingresos Propios"/>
+                    <filter icon="terp-check" domain="[('is_cheques','=',True)]" string="Cheques"/>
+                    <filter icon="terp-check" domain="[('is_personal','=',True)]" string="Personal"/>
+                    <filter icon="terp-check" domain="[('is_infraestructura','=',True)]" string="Infraestructura"/>
+                    <filter icon="terp-check" domain="[('is_dir_general','=',True)]" string="Dirección General"/>
+                    <filter icon="terp-check" domain="[('is_pto_cuenta','=','True)]" string="Punto cuenta"/>
+                    <filter icon="terp-check" domain="[('is_transferencia','=',True)]" string="Transferencia"/>
+                    <filter icon="terp-check" domain="[('is_administracion','=',True)]" string="Administración"/>
+                    <filter icon="terp-check" domain="[('is_upe','=',True)]" string="UPE"/>
+                    <filter icon="terp-check" domain="[('is_auditoria','=',True)]" string="Auditoría"/>
+                    <filter icon="terp-check" domain="[('is_planificacion','=',True)]" string="Planificación"/>
+                    <filter icon="terp-check" domain="[('is_informatica','=',True)]" string="Informática"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    
+    <record model="ir.actions.act_window" id="action_correspondencia_gestion_pres">
+        <field name="name">Gestión Presidencia</field>
+        <field name="res_model">correspondencia.gestion.presidencia</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+    <menuitem name="Gestión Principal" id="menu_correspondencia_gestion_presidencia_principal" parent="menu_correspondencia_gestion_presidencia" action="action_correspondencia_gestion_pres" sequence="1"/>
+
+
+    </data>
+</openerp>

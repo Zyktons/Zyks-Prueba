@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <record id="view_correspondencia_administracion_wizard_form" model="ir.ui.view">
+            <field name="name">correspondencia_administracion.report.wizard.form</field>
+            <field name="model">correspondencia_administracion.report.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Administracion General Report Wizard">
+                    <group>
+
+                   <field name="date_start" string= "Fecha de Ingreso"/>
+                   <field name="date_end" string= "Fecha de Egreso"/>
+                  
+                    </group>
+                    <newline/>
+                    <separator colspan='4'/>
+                    <newline/>
+                    <button icon="gtk-cancel" string="Cancelar" special="cancel"/>
+                    <button icon="gtk-print" name="print_report" string="Print" type="object"/>
+               </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_correspondencia_administracion_wizard" >
+            <field name="name"> Reporte de Administracion</field>
+            <field name="res_model">correspondencia_administracion.report.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+<!--
+        <menuitem 
+            name="Reportes"
+            id="menu_reportes"
+            parent="menu_vcorrespondencia_correspondencia_gestion"
+            sequence="16"/>
+        <menuitem 
+            name="Reportes de Presidencia"
+            id="menu_reportes_presidencia"
+            parent="menu_reportes"
+            sequence="16"/>
+-->
+        <menuitem 
+            name="Reportes de Administracion"
+            id="menu_correspondencia_administracion_report"
+            parent="menu_reportes_presidencia"
+            action="action_correspondencia_administracion_wizard"
+            sequence="22"/>
+      
+    </data>
+</openerp>
+

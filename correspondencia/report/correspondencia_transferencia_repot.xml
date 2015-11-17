@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+        <report id="id_correspondencia_transferencia_report23_qweb"
+            string="Transferencia"
+            model="correspondencia.transferencia"
+            report_type="qweb-pdf"
+            file="correspondencia.id_transferencia_report_qweb"
+            name="correspondencia.id_transferencia_report_qweb"
+            menu="True"/>
+    </data>
+
+</openerp>
